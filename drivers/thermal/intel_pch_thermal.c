@@ -166,8 +166,8 @@ struct pch_dev_ops {
 	int (*hw_init)(struct intel_pch_thermal_device *dev);
 	int (*get_temp)(struct intel_pch_thermal_device *, unsigned long *);
 	int (*get_cat_trip)(struct intel_pch_thermal_device *dev, unsigned long *temp);
-	int (*set_thermal_alert_high)(struct intel_pch_thermal_device *dev, 
-				unsigned long temp);
+	int (*set_thermal_alert_high)(struct intel_pch_thermal_device *dev,
+			unsigned long temp);
 	int (*set_thermal_alert_low)(unsigned long temp);
 	int (*get_thermal_alert_high)(unsigned long *temp);
 	int (*get_thermal_alert_low)(unsigned long *temp);
@@ -424,7 +424,6 @@ static int pch_thermal_set_mode(struct thermal_zone_device *tzd,
 	/* TBD: enable/disable */
 
 	return 0;
-	
 }
 
 #ifdef CONFIG_THERMAL_EMULATION
