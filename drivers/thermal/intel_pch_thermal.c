@@ -159,6 +159,30 @@
 #define PCH_THERMAL_DID_PPT  0x1e24
 #define PCH_THERMAL_DID_CPT  0x1c24
 #define PCH_THERMAL_DID_LPT  0x8c24
+ /*Thermal Sensor Policy Control Register */
+#define TSPC_PPT             0x0E
+/*Thermal Reporting Control Register */
+#define TRC_PPT              0x1A
+/*Alert Enable Register */
+#define AE_PPT               0x3F
+/*Processor Temperature Value Register*/
+#define PTL_PPT              0x56
+/*Thermal Sensor PCI Interrupt Enable Register*/
+#define TSPIEN_PPT           0x82
+/*Processor Temperature Value Register*/
+#define PTV_PPT              0x60
+/*Thermal Throttling Register*/
+#define TT_PPT               0x6C
+/*Thermal Sensor Register Lock Control Register */
+#define TSLOCK_PPT           0x83
+/*Thermal Compares 2 Register */
+#define TC2_PPT              0xAC
+/*DIMM Temperature Values Register*/
+#define DTV_PPT              0xB0
+/*Internal Temperature Values Register*/
+#define PHL_PPT              0X70
+
+
 struct intel_pch_thermal_device;
 
 struct pch_dev_ops {
@@ -467,7 +491,18 @@ static int pch_debug_show(struct seq_file *m, void *unused)
 		"ITV  : 0x%08X\n"
 		"TSCO  : 0x%02X\n"
 		"TSES  : 0x%02X\n"
-		"TSGPEN  : 0x%02X\n",
+		"TSGPEN  : 0x%02X\n"
+		"TSPC    :0x%02X\n"
+	        "TRC  : 0x%04X\n"
+	        "AE  : 0x%02X\n"
+	        "PTL  : 0x%04X\n"
+	        "PTV  : 0x%04X\n"
+	        "TT  : 0x%08X\n"
+	        "PHL  : 0x%02X\n"
+	        "TSPIEN  : 0x%02X\n"
+	        "TSLOCK  : 0x%02X\n"
+	        "TC2  : 0x%08X\n"
+	        "DTV  : 0x%08X\n",
 		driver_name, ptdev,
 		pch_thermal_mem_readb(ptdev, TSIU_PPT),
 		pch_thermal_mem_readb(ptdev, TSE_PPT),
@@ -478,7 +513,18 @@ static int pch_debug_show(struct seq_file *m, void *unused)
 		pch_thermal_mem_readl(ptdev, ITV_PPT),
 		pch_thermal_mem_readb(ptdev, TSCO_PPT),
 		pch_thermal_mem_readb(ptdev, TSES_PPT),
-		pch_thermal_mem_readb(ptdev, TSGPEN_PPT)
+		pch_thermal_mem_readb(ptdev, TSGPEN_PPT),
+		pch_thermal_mem_readb(ptdev, TSPC_PPT),
+		pch_thermal_mem_readb(ptdev, TRC_PPT),
+		pch_thermal_mem_readb(ptdev, AE_PPT),
+		pch_thermal_mem_readb(ptdev, PTL_PPT),
+		pch_thermal_mem_readb(ptdev, PTV_PPT),
+		pch_thermal_mem_readb(ptdev, TT_PPT),
+		pch_thermal_mem_readb(ptdev, PHL_PPT),
+		pch_thermal_mem_readb(ptdev, TSPIEN_PPT),
+		pch_thermal_mem_readb(ptdev, TSLOCK_PPT),
+		pch_thermal_mem_readb(ptdev, TC2_PPT),
+		pch_thermal_mem_readb(ptdev, DTV_PPT)
 		);
 
 	return 0;
