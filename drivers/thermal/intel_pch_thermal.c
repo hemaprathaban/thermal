@@ -119,42 +119,42 @@
 
 
 
-//
-// Bit 7: Policy lock down bit; must be 0 for programming AUX trip point
-// Size is one byte
-//
-#define TSPC0_OFFSET_PPT    0x0E    // Thermal sensor 0 policy control
-#define TSPC1_OFFSET_PPT    0x4E    // Thermal sensor 1 policy control
 
-//
-// Bit 7: Aux2 high to low trip happened
-// Bit 6: Catastrophic high to low trip happened
-// Bit 5: Hot high to low trip happened
-// Bit 4: Aux high to low trip happened
-// Bit 3: Aux2 low to high trip happened
-// Bit 2: Catastrophic low to high trip happened
-// Bit 1: Hot low to high trip happened
-// Bit 0: Aux low to high trip happened
-// Size is one byte
-//
-// Software must write a 1 to clear the status bit
-//
-#define TSES0_OFFSET_PPT    0x0C    // Thermal sensor 0 error status
-#define TSES1_OFFSET_PPT    0x4C    // Thermal sensor 1 error status
+/* Bit 7: Policy lock down bit; must be 0 for programming AUX trip point
+ * Size is one byte */
 
-//
-// Bit 7: Aux2 high to low enable
-// Bit 6: Catastrophic high to low enable
-// Bit 5: Hot high to low enable
-// Bit 4: Aux high to low enable
-// Bit 3: Aux2 low to high enable
-// Bit 2: Catastrophic low to high enable
-// Bit 1: Hot low to high enable
-// Bit 0: Aux low to high enable
-// Size is one byte
-//
-#define TSPIEN0_OFFSET_PPT    0x82    // PCI interrupt event enable
-#define TSPIEN1_OFFSET_PPT    0xC2    // PCI interrupt event enable 1
+#define TSPC0_OFFSET_PPT    0x0E    /* Thermal sensor 0 policy control */
+#define TSPC1_OFFSET_PPT    0x4E    /* Thermal sensor 1 policy control */
+
+
+/* Bit 7: Aux2 high to low trip happened
+ * Bit 6: Catastrophic high to low trip happened
+ * Bit 5: Hot high to low trip happened
+ * Bit 4: Aux high to low trip happened
+ * Bit 3: Aux2 low to high trip happened
+ * Bit 2: Catastrophic low to high trip happened
+ * Bit 1: Hot low to high trip happened
+ * Bit 0: Aux low to high trip happened
+ * Size is one byte */
+
+/* Software must write a 1 to clear the status bit */
+
+#define TSES0_OFFSET_PPT    0x0C    /* Thermal sensor 0 error status */
+#define TSES1_OFFSET_PPT    0x4C    /* Thermal sensor 1 error status */
+
+
+/* Bit 7: Aux2 high to low enable
+ * Bit 6: Catastrophic high to low enable
+ * Bit 5: Hot high to low enable
+ * Bit 4: Aux high to low enable
+ * Bit 3: Aux2 low to high enable
+ * Bit 2: Catastrophic low to high enable
+ * Bit 1: Hot low to high enable
+ * Bit 0: Aux low to high enable
+ * Size is one byte */
+
+#define TSPIEN0_OFFSET_PPT    0x82    /* PCI interrupt event enable */
+#define TSPIEN1_OFFSET_PPT    0xC2    /* PCI interrupt event enable 1 */
 
 #define PCH_THERMAL_DID_PPT  0x1e24
 #define PCH_THERMAL_DID_CPT  0x1c24
@@ -323,9 +323,9 @@ static struct pch_dev_ops pch_dev_ops_cpt_ppt = {
 	.get_temp = pch_cpt_ppt_get_temp,
 	.get_cat_trip = pch_cpt_ppt_get_ctt,
 	.set_thermal_alert_high = pch_cpt_ppt_set_alert_high,
-//	.set_thermal_alert_low = pch_cpt_ppt_set_alert_low,
-//	.get_thermal_alert_high = pch_cpt_ppt_get_alert_high,
-//	.get_thermal_alert_low = pch_cpt_ppt_get_alert_low
+/*	.set_thermal_alert_low = pch_cpt_ppt_set_alert_low,
+ *	.get_thermal_alert_high = pch_cpt_ppt_get_alert_high,
+ *	.get_thermal_alert_low = pch_cpt_ppt_get_alert_low */
 };
 
 /* REVISIT: specific to LPT */
@@ -441,7 +441,7 @@ static struct thermal_zone_device_ops tzd_ops = {
 	.unbind = pch_thermal_unbind_cdev,
 #endif
 	.get_temp = pch_thermal_get_temp,
-	.set_emul_temp = intel_pch_set_emul_temp,
+	/*.set_emul_temp = intel_pch_set_emul_temp, */
 	.get_mode = pch_thermal_get_mode,
 	.set_mode = pch_thermal_set_mode,
 	.get_trip_type = pch_get_trip_type,
