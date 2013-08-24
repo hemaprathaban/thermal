@@ -246,7 +246,7 @@ static inline void pch_thermal_mem_writeb(struct intel_pch_thermal_device *ptdev
 #define	DRIVER_VERSION		"April 2012"
 static const char driver_name[] = "intel_pch_thermal";
 
-static const struct pci_device_id pci_ids[] = {
+static DEFINE_PCI_DEVICE_TABLE(pci_ids) = {
 	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x1e24)}, /* PPT */
 	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x1c24)}, /* CPT */
 	{ 0,}
