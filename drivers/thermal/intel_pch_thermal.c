@@ -544,7 +544,7 @@ static const struct file_operations pch_debug_fops = {
 	.owner		= THIS_MODULE,
 };
 
-static inline void pch_create_debug_files (struct intel_pch_thermal_device *ptdev)
+static inline void pch_create_debug_files(struct intel_pch_thermal_device *ptdev)
 {
 	ptdev->debug_dir = debugfs_create_dir(ptdev->name, NULL);
 	if (!ptdev->debug_dir)
