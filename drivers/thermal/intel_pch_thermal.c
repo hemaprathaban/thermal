@@ -276,7 +276,7 @@ static void  intel_pch_thermal_remove(struct pci_dev *pdev)
 
 static int pch_cpt_ppt_handler(struct intel_pch_thermal_device *dev)
 {
-	printk("%s\n", __func__);
+	pr_debug(KERN_DEBUG "%s\n", __func__);
 
 	return 0;
 }
@@ -309,7 +309,7 @@ static int pch_cpt_ppt_init(struct intel_pch_thermal_device *ptdev)
 static int pch_cpt_ppt_get_ctt(struct intel_pch_thermal_device *ptdev, unsigned long *temp)
 {
 	/* FIXME: get real data */
-	printk("%s: dev %s\n", __func__, ptdev->name);
+	pr_debug(KERN_DEBUG "%s: dev %s\n", __func__, ptdev->name);
 	*temp = 100000;
 	return 0;
 }
@@ -322,14 +322,14 @@ static int pch_cpt_ppt_get_temp(struct intel_pch_thermal_device *ptdev, unsigned
 	tstr = pch_thermal_mem_readb(ptdev, TSTR_PPT) & 0x7F;
 	*temp = (ptdev->temp_offset - (ptdev->temp_slope * tstr)) / 10;
 
-	printk(KERN_DEBUG "%s: tstr:%d, temp %lu\n", __func__, tstr, *temp);
+	pr_debug(KERN_DEBUG "%s: tstr:%d, temp %lu\n", __func__, tstr, *temp);
 
 	return 0;
 }
 
 static int pch_cpt_ppt_set_alert_high(struct intel_pch_thermal_device *ptdev, unsigned long temp)
 {
-	printk("%s: dev %s\n", __func__, ptdev->name);
+	pr_debug(KERN_DEBUG "%s: dev %s\n", __func__, ptdev->name);
 
 	return 0;
 }
@@ -444,7 +444,7 @@ static int pch_thermal_set_mode(struct thermal_zone_device *tzd,
 {
 	struct intel_pch_thermal_device *ptdev = tzd->devdata;
 
-	printk("%s: dev %s\n", __func__, ptdev->name);
+	pr_info("%s: dev %s\n", __func__, ptdev->name);
 	/* TBD: enable/disable */
 
 	return 0;
