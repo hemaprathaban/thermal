@@ -423,7 +423,7 @@ static int pch_get_acpi_handle(struct pci_dev *pdev)
 			out_obj->type);
 	}
 
-	printk(KERN_INFO "GTSH %llu\n", out_obj->integer.value);
+	pr_info(KERN_INFO "GTSH %llu\n", out_obj->integer.value);
 
 	rc = 0;
  out_free:
@@ -532,7 +532,7 @@ static int pch_debug_show(struct seq_file *m, void *unused)
 static int pch_debug_open(struct inode *inode,
 			struct file *file)
 {
-	printk(KERN_INFO "%s:%p\n", __func__, inode->i_private);
+	pr_info(KERN_INFO "%s:%p\n", __func__, inode->i_private);
 	return single_open(file, pch_debug_show, inode->i_private);
 }
 
