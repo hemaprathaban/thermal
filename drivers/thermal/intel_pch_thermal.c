@@ -492,16 +492,16 @@ static int pch_debug_show(struct seq_file *m, void *unused)
 		"TSES  : 0x%02X\n"
 		"TSGPEN  : 0x%02X\n"
 		"TSPC    :0x%02X\n"
-	        "TRC  : 0x%04X\n"
-	        "AE  : 0x%02X\n"
-	        "PTL  : 0x%04X\n"
-	        "PTV  : 0x%04X\n"
-	        "TT  : 0x%08X\n"
-	        "PHL  : 0x%02X\n"
-	        "TSPIEN  : 0x%02X\n"
-	        "TSLOCK  : 0x%02X\n"
-	        "TC2  : 0x%08X\n"
-	        "DTV  : 0x%08X\n",
+		"TRC  : 0x%04X\n"
+		"AE  : 0x%02X\n"
+		"PTL  : 0x%04X\n"
+		"PTV  : 0x%04X\n"
+		"TT  : 0x%08X\n"
+		"PHL  : 0x%02X\n"
+		"TSPIEN  : 0x%02X\n"
+		"TSLOCK  : 0x%02X\n"
+		"TC2  : 0x%08X\n"
+		"DTV  : 0x%08X\n",
 		driver_name, ptdev,
 		pch_thermal_mem_readb(ptdev, TSIU_PPT),
 		pch_thermal_mem_readb(ptdev, TSE_PPT),
