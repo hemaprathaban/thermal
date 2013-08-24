@@ -573,7 +573,7 @@ static int intel_pch_thermal_probe(struct pci_dev *pdev,
 	int err = 0;
 	struct intel_pch_thermal_device *ptdev;
 
-	ptdev = kzalloc(sizeof *ptdev, GFP_KERNEL);
+	ptdev = kzalloc(sizeof(*ptdev), GFP_KERNEL);
 	if (!ptdev)
 		return -ENOMEM;
 
