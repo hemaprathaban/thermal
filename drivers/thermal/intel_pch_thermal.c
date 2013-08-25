@@ -181,10 +181,8 @@
 #define DTV_PPT              0xB0
 /*Internal Temperature Values Register*/
 #define PHL_PPT              0X70
-
-
 struct intel_pch_thermal_device;
-
+struct thermal_cooling_device *cooling_dev;
 struct pch_dev_ops {
 	int (*irq_handle)(struct intel_pch_thermal_device *dev);
 	int (*hw_init)(struct intel_pch_thermal_device *dev);
@@ -269,6 +267,7 @@ static void  intel_pch_thermal_remove(struct pci_dev *pdev)
 	free_irq(pdev->irq, ptdev);
 	pci_set_drvdata(pdev, NULL);
 	kfree(ptdev);
+	thermal_cooling_device_unregister(cooling_dev);
 	pci_release_region(pdev, 0);
 	thermal_zone_device_unregister(tzd);
 	debugfs_remove_recursive(ptdev->debug_dir);
@@ -457,8 +456,38 @@ static int intel_pch_set_emul_temp(struct thermal_zone_device *tzd, unsigned lon
 	return 0;
 }
 #endif
-
+/*Thermal cooling device bind*/
+static int pch_thermal_cooling_device(struct thermal_zone_device *thermal, struct thermal_cooling_device *cdev, bool bind)
+{
+	struct pch_device *device = cdev->devdata;
+	struct intel_pch_thermal *tdz = thermal->devdata;
+	struct intel_pch_device *dev;
+	int trip = -1;
+	int result = 0;
+	if (bind)
+		result = thermal_zone_bind_cooling_device
+			(thermal, trip, cdev,
+			 THERMAL_NO_LIMIT, THERMAL_NO_LIMIT);
+	else
+		result = thermal_zone_unbind_cooling_device
+			(thermal, trip, cdev);
+}
+static int
+intel_thermal_zone_bind_cooling_device_cb(struct thermal_zone_device *thermal,
+		struct thermal_cooling_device *cdev)
+{
+	return pch_thermal_cooling_device(thermal, cdev, true);
+}
+static int
+intel_thermal_zone_unbind_cooling_device_cb(struct thermal_zone_device *thermal,
+		struct thermal_cooling_device *cdev)
+{
+	return pch_thermal_cooling_device(thermal, cdev, false);
+}
+/*end of cooling device bind*/
 static struct thermal_zone_device_ops tzd_ops = {
+	.bind = intel_thermal_zone_bind_cooling_device_cb,
+	.unbind = intel_thermal_zone_unbind_cooling_device_cb,
 #if 0
 	.bind = pch_thermal_bind_cdev, /* bind throttling control cdev to itself? */
 	.unbind = pch_thermal_unbind_cdev,
@@ -559,13 +588,35 @@ static inline void pch_create_debug_files(struct intel_pch_thermal_device *ptdev
 file_error:
 	debugfs_remove_recursive(ptdev->debug_dir);
 }
+/*bind to generic thermal layer as cooling device*/
+static int pch_get_max_state(struct thermal_cooling_device *cdev,
+		unsigned long *state)
+{
+	*state = 1;
+	return 0;
+}
+static int pch_get_cur_state(struct thermal_cooling_device *cdev,
+		unsigned long *state)
+{
+	*state = -1;
+	return 0;
+}
+static int pch_set_cur_state(struct thermal_cooling_device *cdev,
+		unsigned long new_target_ratio)
+{
+	int ret = 0;
+	return ret;
+}
+static struct thermal_cooling_device_ops pch_cooling_ops = {
 
-
-/**
- *	intel_pch_thermal_probe
+	.get_max_state = pch_get_max_state,
+	.get_cur_state = pch_get_cur_state,
+	.set_cur_state = pch_set_cur_state,
+};
+/* end of cooling stuffs*/
+/*	intel_pch_thermal_probe
  *	@dev: the PCI device matching
  *	@id: entry in the match table
- *
  */
 static int intel_pch_thermal_probe(struct pci_dev *pdev,
 				const struct pci_device_id *id)
@@ -629,9 +680,14 @@ static int intel_pch_thermal_probe(struct pci_dev *pdev,
 		err = -ENODEV;
 		goto error_cleanup;
 	}
-
+/* register  cooling device */
+	cooling_dev = thermal_cooling_device_register("intel_pch_cooling", NULL,
+			&pch_cooling_ops);
+	if (IS_ERR(cooling_dev))
+		pr_info(KERN_INFO "failed to register cooling device pch\n");
+/* end cooling device register*/
 	tzd = thermal_zone_device_register(ptdev->name,
-					NR_PCH_TRIPS, 0, ptdev, &tzd_ops, NULL, 0, 0);
+			NR_PCH_TRIPS, 0, ptdev, &tzd_ops, NULL, 0, 0);
 	if (IS_ERR(tzd)) {
 		dev_err(&pdev->dev, "failed to register thermal zone pch\n");
 		goto error_cleanup;
