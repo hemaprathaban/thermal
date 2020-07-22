@@ -19,7 +19,7 @@
     </section>
 
     <section class="main-content">
-      <p>Thermal management :</p>
+      <p>``Intel thermal device management</p>
 <p>The document explains the work carried for Linux thernal drivers for Intel internship.</p>
 <p>The generic thermal management uses a concept of cooling states.
 The intent of a cooling state is to define thermal modes for supporting devices.
@@ -56,9 +56,9 @@ c. register this device as thermal device by calling thermal_zone_device_registe
       thermal core (thermal_zone_get_temp() in thermal_core.c) calls pch_thermal_get_temp function.
       which inturn calls pch_cpt_ppt_get_temp , which inturn calls pch_thermal_mem_readb to read the register at the offset TSTR_PPT to get the temperature. 
 </code></pre>
-</li>
-<li>
-<p>device registers and their bitmasks for each bit or combination of bits are defined in the code. for example</p>
+<ol start="4">
+<li>device registers and their bitmasks for each bit or combination of bits are defined in the code. for example</li>
+</ol>
 </li>
 </ol>
 <p>/* Register address for enabling Thermal Sensor*/
@@ -88,35 +88,32 @@ A sensor can be anything that can sense the thermal or the temperature level.</p
 <p>A cooling device can be anything which can cool the device hardware for example it can be a  fan or heatsink. But a fan or heatsink can be applicable only for laptops or pc. So small devices like mobile phones and tablets don't have a fan or heatsink. In this case a cooling device can be a software like controlling a cpu frequency to reduce the power 2.</p>
 <p>As for I understand the generic layer provide thermal zone for each sensor.  These thermal zone can attach any cooling devices depending on trip point. Trip point is basically a particular level of thermal management. Depending on the level a specific cooling device will be chosen. This process is called binding and  binding api is called whenever a cooling device is attached to thermal zone. When the device reaches a particular trip point the relevant cooling device is called  from the thermal Zone. A thermal  zone can attach any number of cooling devices for various trip point levels.</p>
 <p>cpufreq: (drivers/cpufreq)</p>
-<p><a href="http://doc.opensuse.org/products/draft/SLES/SLES-tuning_sd_draft/cha.tuning.power.html">http://doc.opensuse.org/products/draft/SLES/SLES-tuning_sd_draft/cha.tuning.power.html</a></p>
-<p>Generic  CPU cooling support: (drivers/thermal)</p>
-<p>config CPU_THERMAL
-bool "generic cpu cooling support"
-depends on CPU_FREQ
-select CPU_FREQ_TABLE
-help
-This implements the generic cpu cooling mechanism through frequency
-reduction. An ACPI version of this already exists
-(drivers/acpi/processor_thermal.c).
-This will be useful for platforms using the generic thermal interface
-and not the ACPI interface.</p>
-<h1>
-<a id="cpufreq-cooling" class="anchor" href="#cpufreq-cooling" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>cpufreq cooling</h1>
+<p><a href="http://doc.opensuse.org/products/draft/SLES/SLES-tuning_sd_draft/cha.tuning.power.html">http://doc.opensuse.org/products/draft/SLES/SLES-tuning_sd_draft/cha.tuning.power.html</a>
+Generic  CPU cooling support: (drivers/thermal)</p>
+<p><code>config CPU_THERMAL</code>
+<code>bool "generic cpu cooling support"</code>
+<code>depends on CPU_FREQ</code>
+<code>select CPU_FREQ_TABLE</code>
+<code>help</code></p>
+<p>This implements the generic cpu cooling mechanism through frequency
+reduction. An ACPI version of this already exists (drivers/acpi/processor_thermal.c).
+This will be useful for platforms using the generic thermal interface and not the ACPI interface.</p>
 <p>thermal_sys-$(CONFIG_CPU_THERMAL)   	+= cpu_cooling.o</p>
 <p>Power Clamp driver: (drivers/thermal)</p>
 <p>linux/Documentation/thermal/intel_powerclamp.txt</p>
-<p>config INTEL_POWERCLAMP
-tristate "Intel PowerClamp idle injection driver"
-depends on THERMAL
-depends on X86
-depends on CPU_SUP_INTEL
-help
-Enable this to enable Intel PowerClamp idle injection driver. This
+<p><code>config INTEL_POWERCLAMP</code>
+<code>tristate "Intel PowerClamp idle injection driver"</code>
+<code>depends on THERMAL</code>
+<code>depends on X86</code>
+<code>depends on CPU_SUP_INTEL</code>
+<code>help</code></p>
+<p>Enable this to enable Intel PowerClamp idle injection driver. This
 enforce idle time which results in more package C-state residency. The
 user interface is exposed via generic thermal framework.</p>
 <p>obj-$(CONFIG_INTEL_POWERCLAMP)  += intel_powerclamp.o</p>
-<p>Here is my commits done for Intel thermal device management
-<a href="https://github.com/hemaprathaban/thermal/commits/hema_thermal">commits</a></p>
+<p>This is basic understanding regarding the intel cooling device, based on this learning commits are done
+like registering cooling device, use_define_PCI_table</p>
+<p><a href="https://github.com/hemaprathaban/thermal/commits/hema_thermal">commits</a></p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/hemaprathaban/thermal">Thermal management  Documentation</a> is maintained by <a href="https://github.com/hemaprathaban">hemaprathaban</a>.</span>
